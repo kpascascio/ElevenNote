@@ -1,4 +1,4 @@
-﻿using System;
+﻿ using System;
 using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
@@ -200,6 +200,8 @@ namespace ElevenNote.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> ForgotPassword(ForgotPasswordViewModel model)
         {
+            //This Salts my password. That salt is a string of characters that protects my original 
+            //password.
             if (ModelState.IsValid)
             {
                 var user = await UserManager.FindByNameAsync(model.Email);
