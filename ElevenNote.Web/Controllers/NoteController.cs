@@ -1,4 +1,6 @@
 ﻿using ElevenNote.Models;
+using ElevenNote.Services;
+using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,8 +21,16 @@ namespace ElevenNote.Web.Controllers
             //Notice that we passed in the array
             // think of how we use string[] 
             // NoteListItem is a data type and we want to pass in an empty array of zero to have something to iterate over.
-            var model = new NoteListItem[0];
-        
+            //var model = new NoteListItem[0]; we dont need this anymore after we created our service 
+
+            //GetUserId is an extension so we need to do a ctrl dot(.)
+            var userId = Guid.Parse(User.Identity.GetUserId());
+
+            var service = new NoteService(userId);
+
+            // model is a Ienumerable for data from our service #mindblown
+            var model = service.GetNotes();
+
             return View(model);
         }
 
@@ -37,11 +47,15 @@ namespace ElevenNote.Web.Controllers
         {
             //while blank we are going to set a break point to check out the data that is being 
             //passed. 
-            if (ModelState.IsValid)
-            {
+            if (!ModelState.IsValid) return View(model);
 
-            }
-            return View(model);
+
+            var userId = Guid.Parse(User.Identity.GetUserId());
+            var service = new NoteService(userId);
+
+            service.CreateNote(model);
+
+            return RedirectToAction("Index");
         }
     }
 }
