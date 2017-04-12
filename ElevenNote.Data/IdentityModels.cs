@@ -35,6 +35,7 @@ namespace ElevenNote.Data
     {
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
+            //DefaultConncetion is reading to the Web.Config that is within the Web side of things
         {
         }
 
@@ -44,13 +45,17 @@ namespace ElevenNote.Data
             return new ApplicationDbContext();
         }
 
+        //Adding properties 
+        //Entity framework treats this as a table of notes because of the DbSet<Note>
+        public DbSet<Note> Notes { get; set; }
+
         /*
          * using override [space] it gave us this block of code. 
          * 
          */
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            //when you're overriding 
+            //we need to delete this line of code!
             //base.OnModelCreating(modelBuilder); 
 
             // first thing we want to do. 
@@ -102,10 +107,4 @@ namespace ElevenNote.Data
             HasKey(iur => iur.RoleId);
         }
     }
-
-    /*
-     * 
-     * 
-     */
-
 }
