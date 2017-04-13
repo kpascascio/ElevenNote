@@ -1,0 +1,10 @@
+﻿@model System.DateTimeOffset?
+
+@*an element that's going to contain the conents on the page*@
+<span>
+    @(
+        
+        Model.HasValue ? Model.Value.LocalDateTime.ToString("G"): "-"
+    )
+    @*//https://msdn.microsoft.com/en-us/library/az4se3k1(v=vs.110).aspx*@
+</span>
