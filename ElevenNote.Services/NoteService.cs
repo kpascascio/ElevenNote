@@ -89,5 +89,30 @@ namespace ElevenNote.Services
                 return query.ToArray();
             }
         } 
+
+        public NoteDetail GetNoteById(int noteId)
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                //We want to just pull one out so we use Single vs Where, which is a enumberable and gives us more than we need
+                //We dont need to call toArray because Single does that for us!
+                //We can use the OwnerId because in this context we are still in the database
+                var entity =
+                    ctx
+                        .Notes
+                        .Single(e => e.OwnerId == _userId && e.NoteId == noteId);
+
+                return
+                    new NoteDetail
+                    {
+                        NoteId = entity.NoteId,
+                        Title = entity.Title,
+                        Content = entity.Content,
+                        CreatedUtc = entity.CreatedUtc,
+                        ModifiedUtc = entity.ModifiedUtc
+
+                    };
+            }
+        } 
     }
 }
