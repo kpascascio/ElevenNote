@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
@@ -27,6 +28,9 @@ namespace ElevenNote.Data
         [Required]
         public string Content { get; set; }
 
+        //always makes sure that false is in the db when we start
+        [DefaultValue(false)]
+        public bool IsStarred { get; set; }
 
         //timezones will be the bane of your existance , you need to standarize on a timezone
         // which will be UTC == universial time coordinated

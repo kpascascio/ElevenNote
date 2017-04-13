@@ -76,6 +76,7 @@ namespace ElevenNote.Services
                                 //these are the fields that are present on the NoteList page!
                                 NoteId = e.NoteId,
                                 Title = e.Title,
+                                IsStarred = e.IsStarred,
                                 CreatedUtc = e.CreatedUtc
                             }
                         );
