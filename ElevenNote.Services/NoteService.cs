@@ -15,6 +15,10 @@ namespace ElevenNote.Services
         private readonly Guid _userId;
         //make sure we let NoteService knowswho is currently using the application
 
+        //the Guid is for the user that we want to pass in and store information for. 
+
+        //the web layer has an expectation to the service to create notes based on the user that is interacting 
+        //with it.
         public NoteService(Guid userId)
         {
             //if we create a new instance of note service we need to give it an id.
@@ -54,13 +58,14 @@ namespace ElevenNote.Services
         //getting the data out from NoteCreate from our Database
         public IEnumerable<NoteListItem> GetNotes()
         {
-            //applicationdbcontext needs to be short life, so it cannot belong in the constructor
+            //applicationdbcontext is a stream, we want to access the stream so we call it then it opens
+            //but as a clean up we also need to close the stream, so it cannot belong in the constructor
             //keep it constrained within a method and a using statment we can limit the time its open
             // also using allows it to be disposed after it's done. 
             using(var ctx = new ApplicationDbContext())
             {
                 var query =
-                    ctx
+                    ctx //this is just an arbitrary name that is short for context 
                         .Notes
                         .Where(e => e.OwnerId == _userId)
                         //putting this in a way that the view can recieve it.

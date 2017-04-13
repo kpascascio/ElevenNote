@@ -24,9 +24,7 @@ namespace ElevenNote.Web.Controllers
             //var model = new NoteListItem[0]; we dont need this anymore after we created our service 
 
             //GetUserId is an extension so we need to do a ctrl dot(.)
-            var userId = Guid.Parse(User.Identity.GetUserId());
-
-            var service = new NoteService(userId);
+            var service = CreateNoteService();
 
             // model is a Ienumerable for data from our service #mindblown
             var model = service.GetNotes();
@@ -45,17 +43,39 @@ namespace ElevenNote.Web.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(NoteCreate model)
         {
-            //while blank we are going to set a break point to check out the data that is being 
-            //passed. 
+            //this check if the data is incorrect and the server is bueno
             if (!ModelState.IsValid) return View(model);
 
+            var service = CreateNoteService();
 
+
+            //This if handles if everything is bueno
+            if (service.CreateNote(model))
+            {
+                //we need to share this data to another view, to be available by the index
+
+                //ViewBag.SaveResult = "Your note was created";
+
+                // this is a small wraper on top of the session
+                // TempData works across views. 
+                // TempData is a dictionary, so we create a key of SaveResults with the value of a string.
+                TempData["SaveResult"] = "Your note was created";
+                //when you read a value it removes it from the session, so its only temporarialy stored
+                return RedirectToAction("Index");
+            };
+
+            //the if statement above happens after submission was valid 
+            //this model state is allowing us to pass an error message to our view.
+            // this is a great case if the server isn't responding, thats when it would reach this statement
+            ModelState.AddModelError("", "Your note could not be created");
+            return View(model);
+        }
+
+        private NoteService CreateNoteService()
+        {
             var userId = Guid.Parse(User.Identity.GetUserId());
             var service = new NoteService(userId);
-
-            service.CreateNote(model);
-
-            return RedirectToAction("Index");
+            return service;
         }
     }
 }

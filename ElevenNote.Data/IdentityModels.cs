@@ -47,6 +47,7 @@ namespace ElevenNote.Data
 
         //Adding properties 
         //Entity framework treats this as a table of notes because of the DbSet<Note>
+        //This is our portal through the services down to the database.
         public DbSet<Note> Notes { get; set; }
 
         /*
