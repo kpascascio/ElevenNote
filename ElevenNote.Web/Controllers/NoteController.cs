@@ -78,6 +78,66 @@ namespace ElevenNote.Web.Controllers
             return View(model);
         }
 
+        //lower case id is important because that the convention used in the route
+        public ActionResult Edit(int id)
+        {
+            var svc = CreateNoteService();
+            var detail = svc.GetNoteById(id);
+            var model =
+                new NoteEdit
+                {
+                    NoteId = detail.NoteId,
+                    Title = detail.Title,
+                    Content = detail.Content
+                };
+
+            return View(model);
+        }
+        //we need to post the data from the edit page!
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(int id, NoteEdit model)
+        {
+            if (!ModelState.IsValid) return View(model);
+
+            if(model.NoteId != id)
+            {
+                ModelState.AddModelError("", "Note ID is mis-matched");
+                return View(model);
+            }
+
+            var service = CreateNoteService();
+            if (service.UpdateNote(model))
+            {
+                TempData["SaveResult"] = "Your note was updated";
+                return RedirectToAction("Index");
+            };
+
+            TempData["SaveResult"] = "Your note was not updated";
+            return View(model);
+        }
+
+        public ActionResult Delete(int id)
+        {
+            var svc = CreateNoteService();
+            var model = svc.GetNoteById(id);
+            return View(model);
+        }
+
+        [HttpPost]
+        //this action overrides the name of the action method that it's called on
+        [ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeletePost(int id)
+        {
+            var svc = CreateNoteService();
+            var model = svc.DeleteNote(id);
+
+            TempData["SaveResults"] = "Your note was deleted!";
+
+            return RedirectToAction("Index");
+        }
+
         private NoteService CreateNoteService()
         {
             var userId = Guid.Parse(User.Identity.GetUserId());

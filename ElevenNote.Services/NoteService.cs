@@ -114,5 +114,39 @@ namespace ElevenNote.Services
                     };
             }
         } 
+
+        //EF(Entity Framework) wants to track this information, we need to get the single note id from the passed in model
+        //This looks just like the create method.
+        public bool UpdateNote(NoteEdit model)
+        {
+            using(var ctx = new ApplicationDbContext())
+            {
+                var entity =
+                ctx
+                   .Notes
+                   .Single(e => e.NoteId == model.NoteId && e.OwnerId == _userId);
+
+                entity.Title = model.Title;
+                entity.Content = model.Content;
+                entity.ModifiedUtc = DateTimeOffset.UtcNow;
+
+                return ctx.SaveChanges() == 1;
+            }
+        } 
+
+        public bool DeleteNote(int noteId)
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                var entity =
+                ctx
+                   .Notes
+                   .Single(e => e.OwnerId == _userId && e.NoteId == noteId);
+
+                ctx.Notes.Remove(entity);
+
+                return ctx.SaveChanges() == 1;
+            }
+        }
     }
 }
