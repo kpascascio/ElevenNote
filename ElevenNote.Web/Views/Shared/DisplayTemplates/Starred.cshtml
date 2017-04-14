@@ -1,5 +1,9 @@
 ﻿@model bool
-
+<!--allows us to push data from one view to another -->
 <span>
-    <i class="glyphicon @(Model ? "glyphicon-star" : "glyphicon-star-empty")"></i>
+    <i class="glyphicon @(Model ? "glyphicon-star" : "glyphicon-star-empty")"
+       data-toggle="star"
+       
+       data-id="@ViewBag.Id"
+       ></i>
 </span>
