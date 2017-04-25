@@ -29,13 +29,24 @@ namespace ElevenNote.Data
             // Add custom user claims here
             return userIdentity;
         }
+
+
+        // You can add profile data for the user by adding more properties to your ApplicationUser class, please visit https://go.microsoft.com/fwlink/?LinkID=317594 to learn more.
+        //this an override for our webAPI
+        public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager, string authenticationType)
+        {
+            // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
+            var userIdentity = await manager.CreateIdentityAsync(this, authenticationType);
+            // Add custom user claims here
+            return userIdentity;
+        }
     }
 
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
-            //DefaultConncetion is reading to the Web.Config that is within the Web side of things
+        //DefaultConncetion is reading to the Web.Config that is within the Web side of things
         {
         }
 
