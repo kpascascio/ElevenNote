@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ElevenNote.MobileApp.NotesPage"
+             Title="My Notes"
+             NavigationPage.HasBackButton="False">
+    <!--Title lets me set the heading of the page... Go figure-->
+    <!-- For the Has back button, that is sayign that the view if this is on the stack it will have a back button, but we don't want that to show up so we set it to false-->
+    
+    
+    <!--List view takes a data source and spits out deatils -->
+    <!-- 2 way data binding... check it out outside of the class-->
+    <StackLayout Orientation="Vertical" VerticalOptions="FillAndExpand" Margin="10">
+        <ListView x:Name="lvwNotes">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <!--                     Special Xamarin Nomenclature-->
+                    <ImageCell ImageSource="{Binding StarImage}" Text="{Binding Title}" />
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        <Label Text="You don't have any notes. Why don't you add one?" x:Name="lblNoNotes" IsVisible="False" />
+    </StackLayout>
+</ContentPage>
