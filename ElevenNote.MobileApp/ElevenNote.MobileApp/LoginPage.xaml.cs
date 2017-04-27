@@ -22,7 +22,7 @@ namespace ElevenNote.MobileApp
             // Make sure they filled all the fields.
             if (string.IsNullOrWhiteSpace(fldUsername.Text) || string.IsNullOrWhiteSpace(fldPassword.Text))
             {
-                //                   pop             message                               ok btn
+                //                   Title             message                          ok btn
                 await DisplayAlert("Whoops", "Please enter a username and password.", "Okie Dokie");
                 return;
             }
@@ -34,6 +34,7 @@ namespace ElevenNote.MobileApp
             btnLogin.IsEnabled = false;
 
             // Attempt to log in.
+            // Dot Net makes the App class static 
             await App.NoteService.Login(fldUsername.Text.Trim(), fldPassword.Text)
                 .ContinueWith(async task =>  //Javascript this is a promise the .then
                 {
