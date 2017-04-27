@@ -59,6 +59,19 @@ namespace ElevenNote.MobileApp
                 lvwNotes.IsRefreshing = false;
                 lblNoNotes.IsVisible = !Notes.Any();
             };
+
+            this.ToolbarItems.Add(new ToolbarItem("Add", null, async () =>
+            {
+                await Navigation.PushAsync(new NoteDetailPage(null));
+            }));
+
+            this.ToolbarItems.Add(new ToolbarItem("Log Out", null, async () =>
+            {
+                if (await DisplayAlert("Well?", "Are you sure you want to quit back to the login screen?", "Yep", "Nope"))
+                {
+                    await Navigation.PopAsync(true);
+                }
+            }));
         }
 
         //there are a lot of events that you can override on a page, rotation orientation, etc. 
@@ -68,6 +81,15 @@ namespace ElevenNote.MobileApp
         protected override async void OnAppearing()
         {
             await PopluateNoteList();
+        }
+
+        private void LvwNotes_OnItemSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+            if (e.SelectedItem != null)
+            {
+                var note = e.SelectedItem as NotesListItemViewModel;
+                Navigation.PushAsync(new NoteDetailPage(note.NoteId));
+            }
         }
     }
 }
