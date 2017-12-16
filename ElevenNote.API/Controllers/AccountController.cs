@@ -338,7 +338,12 @@ namespace ElevenNote.API.Controllers
                 return GetErrorResult(result);
             }
 
-            return Ok();
+            return Ok( new
+            {
+                HttpContext.Current.User.Identity.IsAuthenticated,
+                HttpContext.Current.User.Identity.Name,
+                result
+            });
         }
 
         // POST api/Account/RegisterExternal

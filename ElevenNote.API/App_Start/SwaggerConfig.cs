@@ -111,7 +111,7 @@ namespace ElevenNote.API
                     // hold additional metadata for an API. Version and title are required but you can also provide
                     // additional fields by chaining methods off SingleApiVersion.
                     //
-                    c.SingleApiVersion("v1", "CrimeWatch.OfficerAPI");
+                    c.SingleApiVersion("v1", "Eleven Note API");
 
                     // Enable adding the Authorization header to [Authorize]d endpoints.
                     c.OperationFilter(() => new AddAuthorizationHeaderParameterOperationFilter());

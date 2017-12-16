@@ -37,24 +37,27 @@ namespace ElevenNote.API.Controllers
             return Ok(note);
         }
 
-        public IHttpActionResult Post(NoteCreate model)
+        public IHttpActionResult Post(NoteCreate note)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
             var svc = GetNotesService();
 
-            return Ok(svc.CreateNote(model));
+            if (!svc.CreateNote(note)) return InternalServerError();
+
+            return Ok(svc.CreateNote(note));
         }
 
-        public IHttpActionResult Put(NoteEdit model)
+        public IHttpActionResult Put(NoteEdit note)
         {
             if (!ModelState.IsValid) return BadRequest(ModelState);
 
             var svc = GetNotesService();
+            
 
-            var note = svc.GetNoteById(model.NoteId);
-            if (note == null) return NotFound();
+            var noteById = svc.GetNoteById(note.NoteId);
+            if (noteById == null) return NotFound();
 
-            return Ok(svc.UpdateNote(model));
+            return Ok(svc.UpdateNote(note));
         }
 
         public IHttpActionResult Delete(int id)
