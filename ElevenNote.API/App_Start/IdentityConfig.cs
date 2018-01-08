@@ -43,4 +43,15 @@ namespace ElevenNote.API
             return manager;
         }
     }
+
+    public class ApplicationRoleManager : RoleManager<IdentityRole>
+    {
+        public ApplicationRoleManager(RoleStore<IdentityRole> store): base(store) { }
+
+        public static ApplicationRoleManager Create(IOwinContext context)
+        {
+            var store = new RoleStore<IdentityRole>(context.Get<ApplicationDbContext>());
+            return new ApplicationRoleManager(store);
+        }
+    }
 }

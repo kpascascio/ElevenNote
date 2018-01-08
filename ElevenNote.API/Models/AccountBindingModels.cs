@@ -13,6 +13,13 @@ namespace ElevenNote.API.Models
         public string ExternalAccessToken { get; set; }
     }
 
+    public class AddUserToAdminModel
+    {
+        [Required]
+        [Display(Name = "Email Address")]
+        public string Email { get; set; }
+    }
+
     public class ChangePasswordBindingModel
     {
         [Required]

@@ -17,6 +17,7 @@ using ElevenNote.API.Models;
 using ElevenNote.API.Providers;
 using ElevenNote.API.Results;
 using ElevenNote.Data;
+using System.Linq;
 
 namespace ElevenNote.API.Controllers
 {
@@ -344,6 +345,30 @@ namespace ElevenNote.API.Controllers
                 HttpContext.Current.User.Identity.Name,
                 result
             });
+        }
+
+
+        [Route("AddUserToAdmin")]
+        public async Task<IHttpActionResult> AddUserToAdmin(AddUserToAdminModel model)
+        {
+            var roles = ApplicationRoleManager.Create(HttpContext.Current.GetOwinContext());
+            
+            if (!await roles.RoleExistsAsync(SecurityRoles.Admin))
+            {
+                await roles.CreateAsync(new IdentityRole { Name = SecurityRoles.Admin });
+            }
+
+            // check to see if a user is found?
+            var userResult = await UserManager.FindByEmailAsync(model.Email);
+
+            var roleResult = await UserManager.AddToRoleAsync(userResult.Id, SecurityRoles.Admin);
+
+            if (!roleResult.Succeeded)
+            {
+                return GetErrorResult(roleResult);
+            }
+
+            return Ok();
         }
 
         // POST api/Account/RegisterExternal

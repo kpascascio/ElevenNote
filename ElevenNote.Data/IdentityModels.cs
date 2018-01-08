@@ -90,7 +90,6 @@ namespace ElevenNote.Data
                 .Add(new IndentityUserRoleConfiguration());
         }
     }
-    //Adding this new hottness, 
     /* 
      * iul = identityUserLogin 
      * HasKey== says that this should be the primary key in our database
@@ -118,5 +117,10 @@ namespace ElevenNote.Data
             //This is the identifer for our data that has to be presented
             HasKey(iur => iur.RoleId);
         }
+    }
+
+    public class SecurityRoles
+    {
+        public const string Admin = "admin";
     }
 }
