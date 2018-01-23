@@ -371,6 +371,13 @@ namespace ElevenNote.API.Controllers
             return Ok();
         }
 
+        [Route("IsAdmin")]
+        public IHttpActionResult GetAdmin()
+        {
+            var userId = Guid.Parse(User.Identity.GetUserId());
+            return Ok(User.IsInRole("admin"));
+        }
+
         // POST api/Account/RegisterExternal
         [OverrideAuthentication]
         [HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]

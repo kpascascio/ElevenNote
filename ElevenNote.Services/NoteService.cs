@@ -89,7 +89,7 @@ namespace ElevenNote.Services
                 //toArray method on the query in our return object.
                 return query.ToArray();
             }
-        } 
+        }
 
         public NoteDetail GetNoteById(int noteId)
         {

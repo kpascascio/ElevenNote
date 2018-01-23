@@ -12,9 +12,11 @@ namespace ElevenNote.API.Controllers
     {
         public IHttpActionResult Get()
         {
-            var service = new NoteService(Guid.Parse("6698de7b-705b-4dee-8d2b-21bfe5091cd6"));
+            var service = new NoteService(Guid.Parse("52cfcdfc-4a29-49d2-abb2-b38822b69b12"));
             var data = service.GetNotes();
+            var service22 = new AdminService(Guid.Parse("52cfcdfc-4a29-49d2-abb2-b38822b69b12"));
 
+            service22.CheckAdmin();
             return Ok(data);
         }
     }
